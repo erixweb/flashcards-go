@@ -31,7 +31,7 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) ShowRandomQuestion(contents string) string {
+func (a *App) ShowRandomQuestion(contents string) Question {
 
 	var questions []Question
 
@@ -41,12 +41,15 @@ func (a *App) ShowRandomQuestion(contents string) string {
 	err := json.Unmarshal(contentsBytes, &questions)
 
 	if err != nil {
-		return fmt.Sprintf("Error unmarshalling JSON: %s", err.Error())
+		return Question{
+			Word:        "Error",
+			Translation: "Failed to parse questions",
+		}
 	}
 	random_question := rand.IntN(len(questions))
 	question := questions[random_question]
-	return fmt.Sprintf("Question: %s\n", question.Word)
-}		
+	return question
+}
 
 type Question struct {
 	Word        string `json:"word"`

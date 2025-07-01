@@ -1,146 +1,127 @@
 import "./App.css"
 import logo from "./assets/images/logo-universal.png"
-import { Greet, ShowRandomQuestion } from "../wailsjs/go/main/App"
+import { ShowRandomQuestion } from "../wailsjs/go/main/App"
 import { useState } from "preact/hooks"
 import { h } from "preact"
 
 export function App(props: any) {
-	const [resultText, setResultText] = useState("Please enter your name below 👇")
-	const [name, setName] = useState("")
-	const updateName = (e: any) => setName(e.target.value)
-	const updateResultText = (result: string) => setResultText(result)
-
-	function greet() {
-		Greet(name).then(updateResultText)
-	}
+	const [questions, setQuestions] = useState({ word: "", translation: "" })
+	const [answer, setAnswer] = useState("")
 
 	function showRandomQuestion() {
 		const questions = JSON.stringify([
 			{
-				word: "Father",
-				translation: "Vader",
+				word: "Netherlands",
+				translation: "Nederland",
 			},
 			{
-				word: "Mother",
-				translation: "Moeder",
+				word: "Belgium",
+				translation: "België",
 			},
 			{
-				word: "Brother",
-				translation: "Broer",
+				word: "Germany",
+				translation: "Duitsland",
 			},
 			{
-				word: "Sister",
-				translation: "Zus",
+				word: "France",
+				translation: "Frankrijk",
 			},
 			{
-				word: "Son",
-				translation: "Zoon",
+				word: "Spain",
+				translation: "Spanje",
 			},
 			{
-				word: "Daughter",
-				translation: "Dochter",
+				word: "Italy",
+				translation: "Italië",
 			},
 			{
-				word: "Family",
-				translation: "Familie",
+				word: "United Kingdom",
+				translation: "Verenigd Koninkrijk",
 			},
 			{
-				word: "Child",
-				translation: "Kind",
+				word: "United States",
+				translation: "Verenigde Staten",
 			},
 			{
-				word: "Parents",
-				translation: "Ouders",
+				word: "Canada",
+				translation: "Canada",
 			},
 			{
-				word: "Relatives",
-				translation: "Bloedverwanten",
+				word: "Sweden",
+				translation: "Zweden",
 			},
 			{
-				word: "Grandfather",
-				translation: "Grootvader",
+				word: "Norway",
+				translation: "Noorwegen",
 			},
 			{
-				word: "Grandmother",
-				translation: "Grootmoeder",
+				word: "Denmark",
+				translation: "Denemarken",
 			},
 			{
-				word: "Uncle",
-				translation: "Oom",
+				word: "Finland",
+				translation: "Finland",
 			},
 			{
-				word: "Aunt",
-				translation: "Tante",
+				word: "Poland",
+				translation: "Polen",
 			},
 			{
-				word: "Cousin",
-				translation: "Neef/Nicht",
+				word: "Austria",
+				translation: "Oostenrijk",
 			},
 			{
-				word: "Nephew",
-				translation: "Neef",
+				word: "Switzerland",
+				translation: "Zwitserland",
 			},
 			{
-				word: "Niece",
-				translation: "Nicht",
+				word: "Portugal",
+				translation: "Portugal",
 			},
 			{
-				word: "Husband",
-				translation: "Echtgenoot",
+				word: "Greece",
+				translation: "Griekenland",
 			},
 			{
-				word: "Wife",
-				translation: "Echtgenote",
-			},
-			{
-				word: "In-laws",
-				translation: "Schoonfamilie",
-			},
-			{
-				word: "Stepfather",
-				translation: "Stiefvader",
-			},
-			{
-				word: "Stepmother",
-				translation: "Stiefmoeder",
-			},
-			{
-				word: "Stepbrother",
-				translation: "Stiefbroer",
-			},
-			{
-				word: "Stepsister",
-				translation: "Stiefzus",
+				word: "Ireland",
+				translation: "Ierland",
 			},
 		])
 
-    // @ts-ignore
-    ShowRandomQuestion(questions).then((result) => {
-      setResultText(result)
-    })
+		// @ts-ignore
+		ShowRandomQuestion(questions).then((result) => {
+			// @ts-ignore
+			setQuestions({ word: result.word, translation: result.translation })
+		})
+	}
+	function handleSubmit() {
+		if (answer.toLowerCase() === questions.translation.toLowerCase()) {
+			alert("Correct!")
+		} else {
+			alert(`Incorrect! The correct answer is: ${questions.translation}`)
+		}
+		setAnswer("")
 	}
 
 	return (
 		<div id="App">
 			<img src={logo} id="logo" alt="logo" />
-			<div id="result" className="result">
-				{resultText}
-			</div>
 			<div id="input" className="input-box">
-				<input
-					id="name"
-					className="input"
-					onChange={updateName}
-					autoComplete="off"
-					name="input"
-					type="text"
-				/>
-				<button className="btn" onClick={greet}>
-					Greet
+				{questions.word.length > 0 && (
+					<form className="question" onSubmit={handleSubmit}>
+						<p>Question: {questions.word}</p>
+						<input
+							type="text"
+							onChange={
+								// @ts-ignore
+								(e) => setAnswer(e.target.value)
+							}
+						/>
+					</form>
+				)}
+				<button className="btn" onClick={showRandomQuestion}>
+					Show Random Question
 				</button>
-        <button className="btn" onClick={showRandomQuestion}>
-          Show Random Question
-        </button>
 			</div>
 		</div>
 	)
