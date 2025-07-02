@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"math/rand/v2"
 )
 
@@ -22,15 +21,7 @@ func NewApp() *App {
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
-
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	if len(name) < 1 {
-		return "Hello stranger, It's show time!"
-	}
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
+// ShowRandomQuestion takes a string of JSON contents, unmarshals it into a slice of Question structs,
 func (a *App) ShowRandomQuestion(contents string) Question {
 
 	var questions []Question
