@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"embed"
+	"fmt"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 //go:embed all:frontend/dist
@@ -17,9 +20,20 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "flashcards",
+		Title:  "Flashcards App",
 		Width:  1024,
 		Height: 768,
+		DragAndDrop: &options.DragAndDrop{
+			EnableFileDrop:     true,
+			DisableWebViewDrop: true, // Prevent default browser behavior
+		},
+		OnDomReady: func(ctx context.Context) {
+			// Register the file drop handler after the DOM is ready
+			runtime.OnFileDrop(ctx, func(x, y int, paths []string) {
+				fmt.Printf("Go: File dropped: %v\n", paths)
+				runtime.EventsEmit(ctx, "droppedFiles", paths)
+			})
+		},
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
