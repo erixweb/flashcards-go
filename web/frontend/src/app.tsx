@@ -1,85 +1,7 @@
 import { useEffect, useState, useRef } from "preact/hooks"
-import { h } from "preact"
+import { Fragment, h } from "preact"
 import confetti from "canvas-confetti"
 import { ShowRandomQuestion } from "../wailsjs/go/main/App"
-const QUESTIONS_PLAIN = JSON.stringify([
-	{
-		word: "Netherlands",
-		translation: "Nederland",
-	},
-	{
-		word: "Belgium",
-		translation: "België",
-	},
-	{
-		word: "Germany",
-		translation: "Duitsland",
-	},
-	{
-		word: "France",
-		translation: "Frankrijk",
-	},
-	{
-		word: "Spain",
-		translation: "Spanje",
-	},
-	{
-		word: "Italy",
-		translation: "Italië",
-	},
-	{
-		word: "United Kingdom",
-		translation: "Verenigd Koninkrijk",
-	},
-	{
-		word: "United States",
-		translation: "Verenigde Staten",
-	},
-	{
-		word: "Canada",
-		translation: "Canada",
-	},
-	{
-		word: "Sweden",
-		translation: "Zweden",
-	},
-	{
-		word: "Norway",
-		translation: "Noorwegen",
-	},
-	{
-		word: "Denmark",
-		translation: "Denemarken",
-	},
-	{
-		word: "Finland",
-		translation: "Finland",
-	},
-	{
-		word: "Poland",
-		translation: "Polen",
-	},
-	{
-		word: "Austria",
-		translation: "Oostenrijk",
-	},
-	{
-		word: "Switzerland",
-		translation: "Zwitserland",
-	},
-	{
-		word: "Portugal",
-		translation: "Portugal",
-	},
-	{
-		word: "Greece",
-		translation: "Griekenland",
-	},
-	{
-		word: "Ireland",
-		translation: "Ierland",
-	},
-])
 
 export function App() {
 	const [questions, setQuestions] = useState({ word: "", translation: "" })
@@ -208,22 +130,27 @@ export function App() {
 				</form>
 			) : (
 				<section>
-					<div
-						id="drop-zone"
-						ref={dropZoneRef}
-						style="--wails-drop-target: drop; border: 2px dashed #aaa; padding: 2em; margin-bottom: 1em;"
-					>
-						Drop files here!
-						{fileContent && (
-							<pre style="margin-top:1em;max-height:200px;overflow:auto;background:#f9f9f9;padding:1em;">
-								{fileContent}
-							</pre>
+					<Fragment>
+						{fileContent ? (
+							<button className="start-btn" onClick={showRandomQuestion}>
+								Start test
+							</button>
+						) : (
+							<div
+								id="drop-zone"
+								ref={dropZoneRef}
+								style="--wails-drop-target: drop; border: 2px dashed #aaa; padding: 2em; margin-bottom: 1em;"
+							>
+								Drop files here!
+								{fileContent && (
+									<pre style="margin-top:1em;max-height:200px;overflow:auto;background:#f9f9f9;padding:1em;">
+										{fileContent}
+									</pre>
+								)}
+								{error && <div style="color:red;">{error}</div>}
+							</div>
 						)}
-						{error && <div style="color:red;">{error}</div>}
-					</div>
-					<button className="start-btn" onClick={showRandomQuestion}>
-						Start test
-					</button>
+					</Fragment>
 				</section>
 			)}
 		</main>

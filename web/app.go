@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"log"
 	"math/rand/v2"
-	"os"
 )
 
 // App struct
@@ -46,15 +45,6 @@ func (a *App) ShowRandomQuestion(contents string) Question {
 	return question
 }
 
-// ReadFileContent reads the content of a file and returns it as a string.
-func (a *App) ReadFileContent(filePath string) (string, error) {
-	content, err := os.ReadFile(filePath) // Using os.ReadFile for modern Go
-	if err != nil {
-		log.Printf("Error reading file %s: %v", filePath, err)
-		return "", err
-	}
-	return string(content), nil
-}
 
 type Question struct {
 	Word        string `json:"word"`
